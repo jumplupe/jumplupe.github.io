@@ -103,5 +103,9 @@
 <p>因此，基本上，我们需要通过Hook计数来避免这类问题发生。每当Hook执行时，都会根据Hook计数进行检查（显然，当进入Hook时，Hook计数会增加）。这样，我们可以告诉Hook引擎两件事。第一件是，一旦一个Hook出现，则不Hook任何低级Hook函数（比如，我们Hook了fwrite()函数，然后我们在fwrite()的Hook函数中调用fwrite()，此时这个Hook不会被执行）。第二个就是给出最大递归计数，例如，Hook进入3层Hook，通常，这仍然不是所需的功能。</p>
 <p>此外，请注意，此类Hook应该特定于线程。为了解决这个问题，将在概念证明部分显示的生产代码将Hook计数存储在fs寄存器指向的段中（此部分表示线程信息块，即线程特定数据）。</p>
 ]]></content>
+      <tags>
+        <tag>assembly</tag>
+        <tag>hook</tag>
+      </tags>
   </entry>
 </search>
