@@ -20,28 +20,44 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="JumpLupe&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="前言 原文： http:&#x2F;&#x2F;jbremer.org&#x2F;x86-api-hooking-demystified&#x2F;#ah-abstract  本文介绍几种在x86指令集下进行API Hook的几种方法。 关于Hooking，维基百科中给出如下解释：  In computer programming, the term hooking covers a range of techniques used t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="X86 API Hook 原理（C++）">
+<meta property="og:url" content="http://example.com/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/index.html">
 <meta property="og:site_name" content="JumpLupe&#39;s Blog">
+<meta property="og:description" content="前言 原文： http:&#x2F;&#x2F;jbremer.org&#x2F;x86-api-hooking-demystified&#x2F;#ah-abstract  本文介绍几种在x86指令集下进行API Hook的几种方法。 关于Hooking，维基百科中给出如下解释：  In computer programming, the term hooking covers a range of techniques used t">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-trampoline.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-prepend-nop.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-push-retn.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-floating-point.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-indirect-jmp.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-call-instr.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-thiscall-stack.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-class-method.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-thiscall-stack2.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-class-method-trampoline.png">
+<meta property="og:image" content="http://jbremer.org/wp-posts/ah-trampoline.png">
+<meta property="article:published_time" content="2021-02-08T09:10:43.000Z">
+<meta property="article:modified_time" content="2021-02-08T09:11:14.652Z">
 <meta property="article:author" content="JumpLupe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jbremer.org/wp-posts/ah-trampoline.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>JumpLupe's Blog</title>
+  <title>X86 API Hook 原理（C++） | JumpLupe's Blog</title>
   
 
 
@@ -154,9 +170,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -172,10 +189,9 @@
       <meta itemprop="name" content="JumpLupe's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/" class="post-title-link" itemprop="url">X86 API Hook 原理（C++）</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          X86 API Hook 原理（C++）
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -199,7 +215,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>原文： <a target="_blank" rel="noopener" href="http://jbremer.org/x86-api-hooking-demystified/#ah-abstract">http://jbremer.org/x86-api-hooking-demystified/#ah-abstract</a></p>
 </blockquote>
 <p>本文介绍几种在x86指令集下进行API Hook的几种方法。</p>
@@ -299,21 +315,23 @@
 <p>因此，基本上，我们需要通过Hook计数来避免这类问题发生。每当Hook执行时，都会根据Hook计数进行检查（显然，当进入Hook时，Hook计数会增加）。这样，我们可以告诉Hook引擎两件事。第一件是，一旦一个Hook出现，则不Hook任何低级Hook函数（比如，我们Hook了fwrite()函数，然后我们在fwrite()的Hook函数中调用fwrite()，此时这个Hook不会被执行）。第二个就是给出最大递归计数，例如，Hook进入3层Hook，通常，这仍然不是所需的功能。</p>
 <p>此外，请注意，此类Hook应该特定于线程。为了解决这个问题，将在概念证明部分显示的生产代码将Hook计数存储在fs寄存器指向的段中（此部分表示线程信息块，即线程特定数据）。</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -366,6 +384,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80API-Hooking"><span class="nav-number">2.</span> <span class="nav-text">基础API Hooking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trampolines"><span class="nav-number">3.</span> <span class="nav-text">Trampolines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7Hook%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">高级Hook方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9A%E9%A2%84%E5%A4%84%E7%90%86Nop"><span class="nav-number">4.1.</span> <span class="nav-text">方法1：预处理Nop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9APush-Retn"><span class="nav-number">4.2.</span> <span class="nav-text">方法2：Push&#x2F;Retn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%953%EF%BC%9A%E6%B5%AE%E7%82%B9"><span class="nav-number">4.3.</span> <span class="nav-text">方法3：浮点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%954%EF%BC%9A-MMX-SSE"><span class="nav-number">4.4.</span> <span class="nav-text">方法4： MMX&#x2F;SSE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%955%EF%BC%9A%E9%97%B4%E6%8E%A5%E8%B7%B3%E8%BD%AC"><span class="nav-number">4.5.</span> <span class="nav-text">方法5：间接跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%956%EF%BC%9Acall%E6%8C%87%E4%BB%A4"><span class="nav-number">4.6.</span> <span class="nav-text">方法6：call指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">其它方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E6%96%B9%E6%B3%951%EF%BC%9A%E7%83%AD%E8%A1%A5%E4%B8%81"><span class="nav-number">5.1.</span> <span class="nav-text">其它方法1：热补丁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E6%96%B9%E6%B3%952%EF%BC%9AC-%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="nav-number">5.2.</span> <span class="nav-text">其它方法2：C++ 类方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0trampoline"><span class="nav-number">5.2.1.</span> <span class="nav-text">构造trampoline</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82Hook"><span class="nav-number">5.3.</span> <span class="nav-text">多层Hook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2Hook%E9%80%92%E5%BD%92"><span class="nav-number">5.4.</span> <span class="nav-text">防止Hook递归</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -1,209 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
-
-  <meta property="og:type" content="website">
-<meta property="og:title" content="JumpLupe&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="JumpLupe&#39;s Blog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="JumpLupe">
-<meta name="twitter:card" content="summary">
-
-<link rel="canonical" href="http://example.com/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : true,
-    isPost : false,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>JumpLupe's Blog</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">JumpLupe's Blog</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content index posts-expand">
-            
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JumpLupe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JumpLupe's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/" class="post-title-link" itemprop="url">X86 API Hook 原理（C++）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-02-08 17:10:43 / 修改时间：17:11:14" itemprop="dateCreated datePublished" datetime="2021-02-08T17:10:43+08:00">2021-02-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>原文： <a target="_blank" rel="noopener" href="http://jbremer.org/x86-api-hooking-demystified/#ah-abstract">http://jbremer.org/x86-api-hooking-demystified/#ah-abstract</a></p>
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>X86 API Hook 原理（C++）</title>
+    <url>/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>原文： <a href="http://jbremer.org/x86-api-hooking-demystified/#ah-abstract">http://jbremer.org/x86-api-hooking-demystified/#ah-abstract</a></p>
 </blockquote>
 <p>本文介绍几种在x86指令集下进行API Hook的几种方法。</p>
-<p>关于<code>Hooking</code>，维基百科中给出如下<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hooking">解释</a>：</p>
+<p>关于<code>Hooking</code>，维基百科中给出如下<a href="https://en.wikipedia.org/wiki/Hooking">解释</a>：</p>
 <blockquote>
 <p>In computer programming, the term hooking covers a range of techniques used to alter or augment the behavior of an operating system, of applications, or of other software components by intercepting function calls or messages or events passed between software components. Code that handles such intercepted function calls, events or messages is called a “hook”.</p>
 </blockquote>
@@ -220,11 +24,11 @@
 </blockquote>
 <p>之所以减去5，是因为CPU执行跳转指令时已经将跳转指令的长度叠加，function A 从 function B 中减去，是因为相对跳转的原因；function B 和 function A 之间的差值为0x800字节。（eg：如果我们忘记减去function A，那么CPU的执行结束地址为 0x401800 + 0x401000 + 5，显然这并不符合预期）。</p>
 <p>在汇编中，重定向 function A 到 function B 看起来大概如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function_A:</span><br><span class="line">0x4010000: push ebp</span><br><span class="line">0x4010001: mov ebp, esp</span><br><span class="line">0x4010003: sub esp, 0x40</span><br><span class="line">0x4010006: push ebx</span><br><span class="line">0x4010007: mov ebx, dword [esp+0x0c]</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function_A:</span><br><span class="line">0x4010000: jmp function_B</span><br><span class="line">0x4010005: nop</span><br><span class="line">0x4010006: push ebp</span><br><span class="line">0x4010007: mov ebp, esp</span><br><span class="line">... snip ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function_A:</span><br><span class="line">0x4010000: push ebp</span><br><span class="line">0x4010001: mov ebp, esp</span><br><span class="line">0x4010003: sub esp, 0x40</span><br><span class="line">0x4010006: push ebx</span><br><span class="line">0x4010007: mov ebx, dword [esp+0x0c]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function_A:</span><br><span class="line">0x4010000: jmp function_B</span><br><span class="line">0x4010005: nop</span><br><span class="line">0x4010006: push ebp</span><br><span class="line">0x4010007: mov ebp, esp</span><br><span class="line">... snip ...</span><br></pre></td></tr></table></figure>
 <p>在Hooking之前，会看到一些原始指令，但是在Hooking之后，这些原始指令竟会被跳转指令覆盖。如此可见，前三个原始指令总长度为6个字节（即，push ebp 指令位置为0x401006。跳转指令只使用了5个字节，留下了一个额外的字节，使用nop指令覆盖（此指令不执行任何操作）</p>
 <h2 id="Trampolines"><a href="#Trampolines" class="headerlink" title="Trampolines"></a>Trampolines</h2><p>由此，我们Hooked function A，将其重定向到 function B。但是，当我们想执行原先的 function A 而不执行Hook时会发生什么？为了做到这一点，我们需要做一个叫做<code>蹦床函数</code>，下面这段代码展示一个使用Trampoline从Hook函数中执行原始函数的简单例子， 其中 <code>function_A_trampoline</code> 表示 function A的trampoline（被Hook的函数）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 被hook的函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_A</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2)</span></span>;</span><br><span class="line"><span class="comment">// 蹦床函数，使用它在不执行hook情况下调用function_A</span></span><br><span class="line"><span class="keyword">void</span> (*function_A_trampoline)(<span class="keyword">int</span> value, <span class="keyword">int</span> value2);</span><br><span class="line"><span class="comment">// hook函数，当调用function_A时，此函数被执行</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_B</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2)</span></span>&#123;</span><br><span class="line">	function_A_trampoline(value+<span class="number">1</span>, value+<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 被hook的函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_A</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2)</span></span>;</span><br><span class="line"><span class="comment">// 蹦床函数，使用它在不执行hook情况下调用function_A</span></span><br><span class="line"><span class="keyword">void</span> (*function_A_trampoline)(<span class="keyword">int</span> value, <span class="keyword">int</span> value2);</span><br><span class="line"><span class="comment">// hook函数，当调用function_A时，此函数被执行</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_B</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2)</span></span>&#123;</span><br><span class="line">	function_A_trampoline(value+<span class="number">1</span>, value+<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在刚才讨论的Hook示例中，我们覆盖了 function A 的前5个字节。为了不带Hook的执行原始函数，我们将必须执行注入Hook时覆盖的5个字节，然后跳转到 function A 加上几个字节的地址（因此我们将会跳过跳转指令），这些正是上述代码片段中发生的情况，但是在C源码中看不到这一点，因为已经全部被抽象化了。无论如何，一张图片说了超过一千多字，所以这里有一张图说明了trampoline内部的工作情况。</p>
 <p><img src="http://jbremer.org/wp-posts/ah-trampoline.png" alt="示意图"></p>
 <p>在这张图中，可以看到以下执行流程： function A 被调用，执行Hook，因此执行逻辑在 function B 中，function B 执行了一些操作， 但是在执行到地址0x401820时，它想要执行没有Hook的原始function A，此处就是trampoline开始的位置。关于trampoline还可以说明很多东西，但是这张图一图胜千言。trampoline由两部分组成：原始指令和跳转到 function A，但是经过Hook，如果从[[#基础API Hooking]]抓取图片，你将会看到被覆盖的指令现在位于trampoline中。在trampoline中跳转是使用我们之前讨论过的公式进行简单计算。但是，在特定的情况下，地址和偏移量有一点不同，因此确切的公式如下所示：</p>
@@ -235,20 +39,20 @@
 <p>基础API Hook到此结束，后面将会讨论一些更高级的方法，在后续章节，我们将会更详细的介绍如何构造一个trampoline</p>
 <h2 id="高级Hook方法"><a href="#高级Hook方法" class="headerlink" title="高级Hook方法"></a>高级Hook方法</h2><p>我们已经了解过了[[#基础API Hooking]]和[[#Trampolines]]。但是，由于这些Hook方法过于简单（插入跳转指令），因此也很容易检测。所以我们将会探讨一些更高级的方法。除此之外，我们还会介绍[[#Hook C++ 类方法]]</p>
 <p>基础Hook方法示例的检测如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (*function_A == <span class="number">0xe9</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A .\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (*function_A == <span class="number">0xe9</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A .\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是因为0xe9具有32位相对偏移跳转的opcode。根据我们Hook的软件的情况，它可能会检测到或可能不会检测到这样的Hook。在任何情况下，我们将讨论各种试图绕过检测算法的方法。（备注：像GMER那样的软件将会检测所有类型的Hook方法，因为它是根据磁盘上的物理映像检查虚拟内存）。</p>
 <h3 id="方法1：预处理Nop"><a href="#方法1：预处理Nop" class="headerlink" title="方法1：预处理Nop"></a>方法1：预处理Nop</h3><p>这是一个非常简单的解决方法，并且可以应用到任何方案。</p>
 <p>基本上，我们先写入一个<code>nop</code>指令（无任何操作指令），然后是跳转指令，而不是像示例中在function A处写入跳转指令。应用此技术时，请注意跳转专利当前位于地址0x401001(function_A + 1)，该地址的相对偏移量为1。</p>
 <p>一张图来展示此技术细节：</p>
 <p><img src="http://jbremer.org/wp-posts/ah-prepend-nop.png" alt="prepend a nop before the jump hook">]</p>
 <p>由于function_A的第一个指令是<code>nop</code>，而非跳转指令，因此检测方法必须重写为如下所示，以便检测Hook。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> *addr = function_A</span><br><span class="line"><span class="keyword">while</span> (*addr == <span class="number">0x90</span>) addr ++;</span><br><span class="line"><span class="keyword">if</span> (*addr == <span class="number">0xe9</span>) &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A.\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> *addr = function_A</span><br><span class="line"><span class="keyword">while</span> (*addr == <span class="number">0x90</span>) addr ++;</span><br><span class="line"><span class="keyword">if</span> (*addr == <span class="number">0xe9</span>) &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A.\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>基本上，此检测方法可以跳过任何0x90作为opcode的<code>nop</code>指令，并检查所有<code>nop</code>指令后进行跳转。</p>
 <h3 id="方法2：Push-Retn"><a href="#方法2：Push-Retn" class="headerlink" title="方法2：Push/Retn"></a>方法2：Push/Retn</h3><p>push指令在堆栈上压入一个32bit的值，retn指令将堆栈中一个32bit的地址弹出到指令指针中（换句话说，它开始在堆栈顶部找到地址执行）。</p>
 <p>这个方法总共使用6个字节，如下所示。需要注意的是，push指令使用一个绝对地址，而非相对地址。</p>
 <p><img src="http://jbremer.org/wp-posts/ah-push-retn.png" alt="push retn hooking method"></p>
 <p>检测此方法的算法可能如下所示，请记住预处理nop指令或在push和retn指令之间放置nop指令将不会被下述代码检测到。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> *addr = function_A;</span><br><span class="line"><span class="keyword">if</span>(*addr == <span class="number">0x68</span> &amp;&amp; addr[<span class="number">5</span>] == <span class="number">0xc3</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A.\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> *addr = function_A;</span><br><span class="line"><span class="keyword">if</span>(*addr == <span class="number">0x68</span> &amp;&amp; addr[<span class="number">5</span>] == <span class="number">0xc3</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A.\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>正如之前希望了解的，0x68是push指令的opcode，0xc3是retn指令的opcode。</p>
 <h3 id="方法3：浮点"><a href="#方法3：浮点" class="headerlink" title="方法3：浮点"></a>方法3：浮点</h3><p>虽然到目前为止讨论的方法集中在普通的x86指令上，但也有一些有趣的方法涉及浮点等等。</p>
 <p>此示例像push/retn方法，我们在栈顶压入一个虚拟值，然后用真实地址覆盖这个虚拟值，并将其返回。</p>
@@ -256,7 +60,7 @@
 <p>下图展示了该方法操作，Hook使用11字节存储，相比之前的方法多用了一些，但是这仍是一个不错的方法。另请注意，floating_point 是一个指向包含我们Hook函数地址的64bit浮点值的指针。</p>
 <p><img src="http://jbremer.org/wp-posts/ah-floating-point.png" alt="hooking using floating points"></p>
 <p>浮点构造相当容易，如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> floating_point_value = (<span class="keyword">double</span>) function_B;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> floating_point_value = (<span class="keyword">double</span>) function_B;</span><br></pre></td></tr></table></figure>
 <p>fucntion B是我们的Hook函数，与前面的示例保持一致。</p>
 <p>和其它方法一样，原始函数的回调通过trampoline完成。（除非在当前这种情况下，trampoline需要包含不少于原始函数前11字节的指令。）</p>
 <p>显然，这些都只是冰山一角，有许多浮点指令会对当前场景起作用。例如，你可以通过乘以$\pi$（可以被fldpi指令获取）来计算Hook地址。</p>
@@ -275,9 +79,9 @@
 <h3 id="其它方法2：C-类方法"><a href="#其它方法2：C-类方法" class="headerlink" title="其它方法2：C++ 类方法"></a>其它方法2：C++ 类方法</h3><p>此方法是关于C++类函数的Hook，这些函数使用所谓的<code>__thiscall</code>调用约定（或者至少可以在windows上使用）</p>
 <p>在调用类方法之前，此特定调用约定在ecx寄存器中存储对象信息（可以通过类方法中的<code>this</code>变量引用）。换句话说，如果我们想要Hook一个类方法，此处需要特别注意。</p>
 <p>为了进一步解释，我们将使用如下代码片段，其内定义了一个我们想要Hook的函数（function_A)</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">function_A</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3)</span></span>&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;value: %d %d %d\n&quot;</span>, value, value2, value3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">function_A</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3)</span></span>&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;value: %d %d %d\n&quot;</span>, value, value2, value3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>除此之外，由于我们想要Hook使用常规C++函数来Hook C++函数，我们将对把this指针作为Hook函数的第一个参数感兴趣。我们的Hook函数如下面例子所示，包含trampoline（稍后讨论）。值得注意的是我们使用self变量名替代this，由于this是一个C++中的预留关键字。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*function_A_trampoline)(<span class="keyword">void</span> *self, <span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3);</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_B</span><span class="params">(<span class="keyword">void</span> *self, <span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> function_A_trampoline(self, value + <span class="number">1</span>, value + <span class="number">2</span>, value + <span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> (*function_A_trampoline)(<span class="keyword">void</span> *self, <span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3);</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_B</span><span class="params">(<span class="keyword">void</span> *self, <span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> function_A_trampoline(self, value + <span class="number">1</span>, value + <span class="number">2</span>, value + <span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>为了能够从正常的C源码Hook C++类方法，我们需要对堆栈进行一点更改，因为我们必须要this指针压入堆栈中。下图标识调用function A时堆栈的布局，后面当function B（Hook 函数）调用时我们期望的布局。需要注意ecx寄存器包含this指针（如之前所述），并且return_address位于该堆栈顶部。</p>
 <p><img src="http://jbremer.org/wp-posts/ah-thiscall-stack.png" alt="thiscall stack layout"></p>
 <p>幸运的是，我们可以在两个指令之间非常整洁的将this指针压入堆栈。第一步，交换this指针（ecx寄存器）和栈顶（return_address）。交换之后，this指针位于堆栈顶部，return_address在ecx寄存器内。从这里开始，我们可以简单地将ecx寄存器压入堆栈，堆栈的布局就会和我们期望的一样。</p>
@@ -298,241 +102,6 @@
 <h3 id="防止Hook递归"><a href="#防止Hook递归" class="headerlink" title="防止Hook递归"></a>防止Hook递归</h3><p>最后，但并非最不重要的是，关于Hook递归的一些想法。有时，在Hook函数中（示例function B），可能使用诸如打印日志到文件。但是，如果此类函数最终出现在我们的同一个Hook或另一个Hook中将会发生什么？这可能会导致Hook递归，即Hook可能继续Hook其自身，或者一个Hook导向另一个Hook。这显然不是我们期望的，此外，这也是非常令人烦恼的。</p>
 <p>因此，基本上，我们需要通过Hook计数来避免这类问题发生。每当Hook执行时，都会根据Hook计数进行检查（显然，当进入Hook时，Hook计数会增加）。这样，我们可以告诉Hook引擎两件事。第一件是，一旦一个Hook出现，则不Hook任何低级Hook函数（比如，我们Hook了fwrite()函数，然后我们在fwrite()的Hook函数中调用fwrite()，此时这个Hook不会被执行）。第二个就是给出最大递归计数，例如，Hook进入3层Hook，通常，这仍然不是所需的功能。</p>
 <p>此外，请注意，此类Hook应该特定于线程。为了解决这个问题，将在概念证明部分显示的生产代码将Hook计数存储在fs寄存器指向的段中（此部分表示线程信息块，即线程特定数据）。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">JumpLupe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">1</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/jumplupe" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jumplupe" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">JumpLupe</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '.languages',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.dataset.pjax !== undefined) {
-      script.dataset.pjax = '';
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div id="pjax">
-  
-
-  
-
-    </div>
-</body>
-</html>
+]]></content>
+  </entry>
+</search>
