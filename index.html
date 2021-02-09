@@ -199,17 +199,14 @@
 </blockquote>
 <h2 id="判断代码"><a href="#判断代码" class="headerlink" title="判断代码"></a>判断代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;arch: &quot;</span>, <span class="number">32</span> &lt;&lt; (^<span class="keyword">uint</span>(<span class="number">0</span>) &gt;&gt; <span class="number">63</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h2><p>Golang 官方文档 Builtin 章节内<code>type uint</code> 注释：</p>
-<blockquote>
-<p>uint is an unsigned integer type that is at least 32 bits in size. It is a distinct type, however, and not an alias for, say, uint32.</p>
-</blockquote>
-<p>uint 是无符号整型类型，至少由32bit大小。uint是一个独特的类型，并非是uint32的别名</p>
-<p>实际上uint是一个可变长的类型，在32位机器上其长度为32bit，在64位机器上其长度为64bit。</p>
-<p>回到代码片段中，机器为32位和64位是<code>^uint(0)</code>的值是完全不同的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 32位机器</span><br><span class="line">^uint(0) &#x3D; 0xffffffff ^ 0x00000000 &#x3D; 2^32 - 1 &#x3D; 4294967295</span><br><span class="line"></span><br><span class="line"># 64位机器</span><br><span class="line">^uint(0) &#x3D; 0xffffffffffffffff ^ 0x0000000000000000 &#x3D; 18446744073709551615</span><br></pre></td></tr></table></figure>
-<p>所以可知表达式<code>^uint(0) &gt;&gt; 63</code>，当机器为32位时，右移大于31位的结果必然为0，而机器为64位时，右移63位的结果为1。此时，常量值32在32位机器上会左移0位，在64位机器上会左移1位。结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 32位机器</span><br><span class="line">^uint(0) &gt;&gt; 63 &#x3D; 0</span><br><span class="line">32 &lt;&lt; 0 &#x3D; 0x00100000 &lt;&lt; 0 &#x3D; 0x00100000 &#x3D; 32</span><br><span class="line"># 64位机器</span><br><span class="line">^uint(0) &gt;&gt; 63 &#x3D; 1</span><br><span class="line">32 &lt;&lt; 1 &#x3D; 0x00100000 &lt;&lt; 1 &#x3D; 0x01000000 &#x3D; 64</span><br></pre></td></tr></table></figure>
-<p>由此可判断出机器平台是32位还是64位。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/09/Golang-32%E4%BD%8D-64%E4%BD%8D%E5%B9%B3%E5%8F%B0%E5%88%A4%E6%96%AD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -275,98 +272,14 @@
 <blockquote>
 <p>In computer programming, the term hooking covers a range of techniques used to alter or augment the behavior of an operating system, of applications, or of other software components by intercepting function calls or messages or events passed between software components. Code that handles such intercepted function calls, events or messages is called a “hook”.</p>
 </blockquote>
-<h2 id="基础API-Hooking"><a href="#基础API-Hooking" class="headerlink" title="基础API Hooking"></a>基础API Hooking</h2><p>最简单的hooking方法是插入一个跳转指令，x86指令集具有可变长度的指令尺寸（指令长度可以介于1到16字节）。一个特殊的非条件跳转指令的长度是5字节，1个字节表示操作码，其余4个字节表示32bit相对偏移量。（值得注意的是，存在使用8bit相对偏移量的非条件跳转指令，但是在本文中我们不会用到）</p>
-<p>那么，如果我们有两个function，function A 和 function B，我们如何重定向执行函数从 function A 切换到 function B呢？显然我们需要用到一个跳转指令，所以剩下的事就是我们只需要计算正确的相对偏移量。</p>
-<p>假设 fucntion A 位于地址 0x401000，而 function B 位于地址 0x401800。下一步我们需要做的，就是确定所需的相对偏移量。两个函数间存在0x800字节的差值，当我们想要从 function A 跳转到 function B，我们无需担心负偏移量。</p>
-<p>现在到了棘手的部分，假设我们已经将跳转指令在地址 0x401000（function A）处写入，然后此跳转指令被执行。接着CPU将会怎么做呢；首先CPU将会把跳转指令的长度叠加到指令指针（或程序计数器）上，正如我们之前建立时定义的，跳转指令的长度是5字节。在这之后，相对偏移量（位于操作码之后的4个字节或32bit值）将会被叠加到指令指针。换句话说，CPU将在跳转指令执行之后计算新的指令指针。</p>
-<blockquote>
-<p>$instruction_pointer = instruction_pointer + 5 +releative_offset$</p>
-</blockquote>
-<p>因此，计算相对偏移量需要我们反转公式，像如下所示：</p>
-<blockquote>
-<p>$relative_offset = function_B - function_A - 5$</p>
-</blockquote>
-<p>之所以减去5，是因为CPU执行跳转指令时已经将跳转指令的长度叠加，function A 从 function B 中减去，是因为相对跳转的原因；function B 和 function A 之间的差值为0x800字节。（eg：如果我们忘记减去function A，那么CPU的执行结束地址为 0x401800 + 0x401000 + 5，显然这并不符合预期）。</p>
-<p>在汇编中，重定向 function A 到 function B 看起来大概如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function_A:</span><br><span class="line">0x4010000: push ebp</span><br><span class="line">0x4010001: mov ebp, esp</span><br><span class="line">0x4010003: sub esp, 0x40</span><br><span class="line">0x4010006: push ebx</span><br><span class="line">0x4010007: mov ebx, dword [esp+0x0c]</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function_A:</span><br><span class="line">0x4010000: jmp function_B</span><br><span class="line">0x4010005: nop</span><br><span class="line">0x4010006: push ebp</span><br><span class="line">0x4010007: mov ebp, esp</span><br><span class="line">... snip ...</span><br></pre></td></tr></table></figure>
-<p>在Hooking之前，会看到一些原始指令，但是在Hooking之后，这些原始指令竟会被跳转指令覆盖。如此可见，前三个原始指令总长度为6个字节（即，push ebp 指令位置为0x401006。跳转指令只使用了5个字节，留下了一个额外的字节，使用nop指令覆盖（此指令不执行任何操作）</p>
-<h2 id="Trampolines"><a href="#Trampolines" class="headerlink" title="Trampolines"></a>Trampolines</h2><p>由此，我们Hooked function A，将其重定向到 function B。但是，当我们想执行原先的 function A 而不执行Hook时会发生什么？为了做到这一点，我们需要做一个叫做<code>蹦床函数</code>，下面这段代码展示一个使用Trampoline从Hook函数中执行原始函数的简单例子， 其中 <code>function_A_trampoline</code> 表示 function A的trampoline（被Hook的函数）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 被hook的函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_A</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2)</span></span>;</span><br><span class="line"><span class="comment">// 蹦床函数，使用它在不执行hook情况下调用function_A</span></span><br><span class="line"><span class="keyword">void</span> (*function_A_trampoline)(<span class="keyword">int</span> value, <span class="keyword">int</span> value2);</span><br><span class="line"><span class="comment">// hook函数，当调用function_A时，此函数被执行</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_B</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2)</span></span>&#123;</span><br><span class="line">	function_A_trampoline(value+<span class="number">1</span>, value+<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在刚才讨论的Hook示例中，我们覆盖了 function A 的前5个字节。为了不带Hook的执行原始函数，我们将必须执行注入Hook时覆盖的5个字节，然后跳转到 function A 加上几个字节的地址（因此我们将会跳过跳转指令），这些正是上述代码片段中发生的情况，但是在C源码中看不到这一点，因为已经全部被抽象化了。无论如何，一张图片说了超过一千多字，所以这里有一张图说明了trampoline内部的工作情况。</p>
-<p><img src="http://jbremer.org/wp-posts/ah-trampoline.png" alt="示意图"></p>
-<p>在这张图中，可以看到以下执行流程： function A 被调用，执行Hook，因此执行逻辑在 function B 中，function B 执行了一些操作， 但是在执行到地址0x401820时，它想要执行没有Hook的原始function A，此处就是trampoline开始的位置。关于trampoline还可以说明很多东西，但是这张图一图胜千言。trampoline由两部分组成：原始指令和跳转到 function A，但是经过Hook，如果从[[#基础API Hooking]]抓取图片，你将会看到被覆盖的指令现在位于trampoline中。在trampoline中跳转是使用我们之前讨论过的公式进行简单计算。但是，在特定的情况下，地址和偏移量有一点不同，因此确切的公式如下所示：</p>
-<blockquote>
-<p>$relative_offset = (function_A_trampoline + 6) - (function_A + 6) - 5$</p>
-</blockquote>
-<p>请注意，我们从0x402006(function_A_trampoline + 6) 跳转到 0x401006(function_A + 6)。这些地址可以在上面的图片中确认。没有特殊情况下，除了最终我们会得到一个负偏移量，但这并不会给我们带来任何问题（即，CPU尽所有努力表示正确负相对偏移量）。</p>
-<p>基础API Hook到此结束，后面将会讨论一些更高级的方法，在后续章节，我们将会更详细的介绍如何构造一个trampoline</p>
-<h2 id="高级Hook方法"><a href="#高级Hook方法" class="headerlink" title="高级Hook方法"></a>高级Hook方法</h2><p>我们已经了解过了[[#基础API Hooking]]和[[#Trampolines]]。但是，由于这些Hook方法过于简单（插入跳转指令），因此也很容易检测。所以我们将会探讨一些更高级的方法。除此之外，我们还会介绍[[#Hook C++ 类方法]]</p>
-<p>基础Hook方法示例的检测如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (*function_A == <span class="number">0xe9</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A .\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是因为0xe9具有32位相对偏移跳转的opcode。根据我们Hook的软件的情况，它可能会检测到或可能不会检测到这样的Hook。在任何情况下，我们将讨论各种试图绕过检测算法的方法。（备注：像GMER那样的软件将会检测所有类型的Hook方法，因为它是根据磁盘上的物理映像检查虚拟内存）。</p>
-<h3 id="方法1：预处理Nop"><a href="#方法1：预处理Nop" class="headerlink" title="方法1：预处理Nop"></a>方法1：预处理Nop</h3><p>这是一个非常简单的解决方法，并且可以应用到任何方案。</p>
-<p>基本上，我们先写入一个<code>nop</code>指令（无任何操作指令），然后是跳转指令，而不是像示例中在function A处写入跳转指令。应用此技术时，请注意跳转专利当前位于地址0x401001(function_A + 1)，该地址的相对偏移量为1。</p>
-<p>一张图来展示此技术细节：</p>
-<p><img src="http://jbremer.org/wp-posts/ah-prepend-nop.png" alt="prepend a nop before the jump hook">]</p>
-<p>由于function_A的第一个指令是<code>nop</code>，而非跳转指令，因此检测方法必须重写为如下所示，以便检测Hook。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> *addr = function_A</span><br><span class="line"><span class="keyword">while</span> (*addr == <span class="number">0x90</span>) addr ++;</span><br><span class="line"><span class="keyword">if</span> (*addr == <span class="number">0xe9</span>) &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A.\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>基本上，此检测方法可以跳过任何0x90作为opcode的<code>nop</code>指令，并检查所有<code>nop</code>指令后进行跳转。</p>
-<h3 id="方法2：Push-Retn"><a href="#方法2：Push-Retn" class="headerlink" title="方法2：Push/Retn"></a>方法2：Push/Retn</h3><p>push指令在堆栈上压入一个32bit的值，retn指令将堆栈中一个32bit的地址弹出到指令指针中（换句话说，它开始在堆栈顶部找到地址执行）。</p>
-<p>这个方法总共使用6个字节，如下所示。需要注意的是，push指令使用一个绝对地址，而非相对地址。</p>
-<p><img src="http://jbremer.org/wp-posts/ah-push-retn.png" alt="push retn hooking method"></p>
-<p>检测此方法的算法可能如下所示，请记住预处理nop指令或在push和retn指令之间放置nop指令将不会被下述代码检测到。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> *addr = function_A;</span><br><span class="line"><span class="keyword">if</span>(*addr == <span class="number">0x68</span> &amp;&amp; addr[<span class="number">5</span>] == <span class="number">0xc3</span>)&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hook detected in function A.\n&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>正如之前希望了解的，0x68是push指令的opcode，0xc3是retn指令的opcode。</p>
-<h3 id="方法3：浮点"><a href="#方法3：浮点" class="headerlink" title="方法3：浮点"></a>方法3：浮点</h3><p>虽然到目前为止讨论的方法集中在普通的x86指令上，但也有一些有趣的方法涉及浮点等等。</p>
-<p>此示例像push/retn方法，我们在栈顶压入一个虚拟值，然后用真实地址覆盖这个虚拟值，并将其返回。</p>
-<p>这个方法有意思的地方在于：我们将其保存为一个64bit的浮点，而不是存储为一个32bit的地址去跳转。我们在之后读取它的值（使用fid指令），并将其转换为一个32bit的值（使用fistp指令）</p>
-<p>下图展示了该方法操作，Hook使用11字节存储，相比之前的方法多用了一些，但是这仍是一个不错的方法。另请注意，floating_point 是一个指向包含我们Hook函数地址的64bit浮点值的指针。</p>
-<p><img src="http://jbremer.org/wp-posts/ah-floating-point.png" alt="hooking using floating points"></p>
-<p>浮点构造相当容易，如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> floating_point_value = (<span class="keyword">double</span>) function_B;</span><br></pre></td></tr></table></figure>
-<p>fucntion B是我们的Hook函数，与前面的示例保持一致。</p>
-<p>和其它方法一样，原始函数的回调通过trampoline完成。（除非在当前这种情况下，trampoline需要包含不少于原始函数前11字节的指令。）</p>
-<p>显然，这些都只是冰山一角，有许多浮点指令会对当前场景起作用。例如，你可以通过乘以$\pi$（可以被fldpi指令获取）来计算Hook地址。</p>
-<h3 id="方法4：-MMX-SSE"><a href="#方法4：-MMX-SSE" class="headerlink" title="方法4： MMX/SSE"></a>方法4： MMX/SSE</h3><p>这种技术有点类似于[[#方法3：浮点]]。但是，此处我们使用MMX/SSE x86扩展替代使用浮点的方法。</p>
-<p>这两种方法都使用浮点技术，即push/retn方法。第一个方法涉及MMX指令集，尤其是movd指令。此指令像fistp指令（一个浮点指令）一样允许从内存中读取一个值，并将值保存到堆栈。第二种方法，使用SSE指令集，同样利用movd指令。两种方法唯一的区别是，MMX在64bit寄存器上工作，而SSE在128bit寄存器上工作。（虽然这在我们当前情况下没有什么意思，因为movd指令允许读取和写入32bit值）</p>
-<p>无论哪种方法，都和浮点方法完全相同，因此除了用到的指令，此处没有图进行说明。</p>
-<h3 id="方法5：间接跳转"><a href="#方法5：间接跳转" class="headerlink" title="方法5：间接跳转"></a>方法5：间接跳转</h3><p>间接跳转基本上是说，跳转到可以找到的地址。在[[#基础API Hooking]]章节我们介绍了相对跳转，它们属于绝对跳转。相对跳转与[[#方法2：Push Retn]]更相似。</p>
-<p>间接跳转的长度为6个字节，一个简单的Hook例子如下所示：</p>
-<p><img src="http://jbremer.org/wp-posts/ah-indirect-jmp.png" alt="Indirect Jump method"></p>
-<p>请注意，hook_func_ptr表示可以在其中找到我们Hook函数的地址（比如function_B)</p>
-<h3 id="方法6：call指令"><a href="#方法6：call指令" class="headerlink" title="方法6：call指令"></a>方法6：call指令</h3><p>虽然之前所有的Hook方法都是直接跳转Hook函数本身（比如function B），但是这种Hook方法需要额外的步骤。因为call指令会在将一个返回地址压入堆栈后才跳转到指定地址（返回地址是当前指令指针加上指令的长度）</p>
-<p>由于堆栈顶有一个额外的返回地址， 我们首先需要从堆栈中弹出此地址，否则堆栈将会损坏（例如，Hook函数将会从堆栈读取不正确的参数，因为堆栈指针本身就是错误的）。我们通过向堆栈指针添加4个字节从栈顶弹出此地址。（当地址被压入堆栈顶，堆栈指针先缩减4个字节，然后此地址写入更新的堆栈指针指向的地址）当地址从堆栈中弹出后，我们跳转到Hook函数。</p>
-<p>此方法适用于call指令或call指令的变体，以下是该方法的指令展示：</p>
-<p><img src="http://jbremer.org/wp-posts/ah-call-instr.png" alt="Call Instruction method"></p>
-<h2 id="其它方法"><a href="#其它方法" class="headerlink" title="其它方法"></a>其它方法</h2><h3 id="其它方法1：热补丁"><a href="#其它方法1：热补丁" class="headerlink" title="其它方法1：热补丁"></a>其它方法1：热补丁</h3><p>由于是Ms VS C++使用的特定方法，不在细看……</p>
-<h3 id="其它方法2：C-类方法"><a href="#其它方法2：C-类方法" class="headerlink" title="其它方法2：C++ 类方法"></a>其它方法2：C++ 类方法</h3><p>此方法是关于C++类函数的Hook，这些函数使用所谓的<code>__thiscall</code>调用约定（或者至少可以在windows上使用）</p>
-<p>在调用类方法之前，此特定调用约定在ecx寄存器中存储对象信息（可以通过类方法中的<code>this</code>变量引用）。换句话说，如果我们想要Hook一个类方法，此处需要特别注意。</p>
-<p>为了进一步解释，我们将使用如下代码片段，其内定义了一个我们想要Hook的函数（function_A)</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">function_A</span><span class="params">(<span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3)</span></span>&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;value: %d %d %d\n&quot;</span>, value, value2, value3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>除此之外，由于我们想要Hook使用常规C++函数来Hook C++函数，我们将对把this指针作为Hook函数的第一个参数感兴趣。我们的Hook函数如下面例子所示，包含trampoline（稍后讨论）。值得注意的是我们使用self变量名替代this，由于this是一个C++中的预留关键字。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*function_A_trampoline)(<span class="keyword">void</span> *self, <span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3);</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function_B</span><span class="params">(<span class="keyword">void</span> *self, <span class="keyword">int</span> value, <span class="keyword">int</span> value2, <span class="keyword">int</span> value3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> function_A_trampoline(self, value + <span class="number">1</span>, value + <span class="number">2</span>, value + <span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>为了能够从正常的C源码Hook C++类方法，我们需要对堆栈进行一点更改，因为我们必须要this指针压入堆栈中。下图标识调用function A时堆栈的布局，后面当function B（Hook 函数）调用时我们期望的布局。需要注意ecx寄存器包含this指针（如之前所述），并且return_address位于该堆栈顶部。</p>
-<p><img src="http://jbremer.org/wp-posts/ah-thiscall-stack.png" alt="thiscall stack layout"></p>
-<p>幸运的是，我们可以在两个指令之间非常整洁的将this指针压入堆栈。第一步，交换this指针（ecx寄存器）和栈顶（return_address）。交换之后，this指针位于堆栈顶部，return_address在ecx寄存器内。从这里开始，我们可以简单地将ecx寄存器压入堆栈，堆栈的布局就会和我们期望的一样。</p>
-<p>以下是Hook C++类方法的汇编表示：</p>
-<p><img src="http://jbremer.org/wp-posts/ah-class-method.png" alt="C++ Class Method method"></p>
-<p>这就是Hook部分。但是，我们必须同步调整我们的[[#Trampolines]]，因为trampoline接受this指针作为第一个参数。我们需要和想要的堆栈如下所示。（this值显然存储在ecx寄存器之后）</p>
-<p><img src="http://jbremer.org/wp-posts/ah-thiscall-stack2.png" alt="thiscall trampoline stack layout"></p>
-<p>和我们Hook函数时所作的操作完全相反。我们首先从堆栈内弹出return_address，因此栈顶指针指向this，然后ecx寄存器加载return_address。现在我们交换栈顶和ecx寄存器，之后堆栈看起来和我们期望的一致，并且ecx寄存器加载了this指针。下图展示了trampoline，尽管省略了function A的说明。</p>
-<p><img src="http://jbremer.org/wp-posts/ah-class-method-trampoline.png" alt="C++ Class Method Trampoline"></p>
-<h4 id="构造trampoline"><a href="#构造trampoline" class="headerlink" title="构造trampoline"></a>构造trampoline</h4><p>在上一章节，[[#Trampolines]]，我们讨论如何制作trampoline。在此章节，我们将讨论一些在构建trampoline需要考虑到的边缘情况。</p>
-<p>构造trampoline的基础如下。我们需要一个想要Hook的函数（function A)，然后我们需要一个Hook函数。我们将使用最简单的Hook方法；使用5字节空间的直接跳转。由于我们将会覆盖function A的前5个指令，我们需要执行至少位于此函数前5个字节中的指令。但是，这五个字节中的最后一个指令可能非常长。例如，它跨越3到6字节，这是我们前面使用的示例。</p>
-<p><img src="http://jbremer.org/wp-posts/ah-trampoline.png" alt="Trampoline for function A"></p>
-<p>如图可见，第3个指令也使用第6个字节，因此我们不能简单的复制前5个字节，而是必须复制整个指令。为了做到这一点，我们使用所谓的<code>LDE</code>，即长度反汇编引擎（Length Disassembler Engine）的缩写。LDE可以计算指令的长度（通常使用包含每个opcode信息的预定义表进行一些魔术操作）。</p>
-<p>由于LDE可以计算指令长度，我们可以继续获取指令的长度，直到找到至少占5个字节长度的指令。在上面的示例图中，我们获取3个指令达到6字节长度，这之后我们为trampoline找到足够的指令。</p>
-<p>这是最容易的部分，因为我们找到的指令不包含任何分支。但是，任何跳转，调用或者返回指令需要特别注意。要开始跳转和调用指令需要像原函数一样在trampline中指向相同的地址，不过，如果你使用两个公式（一个包含跳转和调用指令的地址，另一个为trampoline中的跳转和调用指令计算偏移量）这个操作并不困难。需要注意的是任何具有8bit相对偏移的跳转，应该转换为具有32bit相对偏移的跳转指令（trampoline和原函数之间的相对偏移不大可能在8bit范围内）。</p>
-<p>最后一点是，有时可能没有足够的内存空间来进行Hook。当存在无条件跳转指令或返回指令时，将会发生这种情况。这种情况出现在当我们只是命中函数末尾时。例如，一个完全不同的函数可能从返回指令后的地址开始，因此我们不能覆盖此类内存。无条件跳转也一样，这个函数将不会在无条件跳转之后继续执行，因此覆盖此指令将导致<code>undefined behavior</code>的异常。</p>
-<h3 id="多层Hook"><a href="#多层Hook" class="headerlink" title="多层Hook"></a>多层Hook</h3><p>完全有可能存在多层Hook，即一个函数上有多个Hook。只有一个条件必须遵守，当在已存在的Hook上注入新Hook时，必须保证新Hook的所需长度等于或小于已有Hook的长度。关于此内容的详细说明可以参与[[#Trampolines]]。在任何情况下，具有32bit相对偏移的直接跳转就足够了，因为它（通常）是长度最短的Hook（以字节为单位）。</p>
-<h3 id="防止Hook递归"><a href="#防止Hook递归" class="headerlink" title="防止Hook递归"></a>防止Hook递归</h3><p>最后，但并非最不重要的是，关于Hook递归的一些想法。有时，在Hook函数中（示例function B），可能使用诸如打印日志到文件。但是，如果此类函数最终出现在我们的同一个Hook或另一个Hook中将会发生什么？这可能会导致Hook递归，即Hook可能继续Hook其自身，或者一个Hook导向另一个Hook。这显然不是我们期望的，此外，这也是非常令人烦恼的。</p>
-<p>因此，基本上，我们需要通过Hook计数来避免这类问题发生。每当Hook执行时，都会根据Hook计数进行检查（显然，当进入Hook时，Hook计数会增加）。这样，我们可以告诉Hook引擎两件事。第一件是，一旦一个Hook出现，则不Hook任何低级Hook函数（比如，我们Hook了fwrite()函数，然后我们在fwrite()的Hook函数中调用fwrite()，此时这个Hook不会被执行）。第二个就是给出最大递归计数，例如，Hook进入3层Hook，通常，这仍然不是所需的功能。</p>
-<p>此外，请注意，此类Hook应该特定于线程。为了解决这个问题，将在概念证明部分显示的生产代码将Hook计数存储在fs寄存器指向的段中（此部分表示线程信息块，即线程特定数据）。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -495,7 +408,31 @@
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
         
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
