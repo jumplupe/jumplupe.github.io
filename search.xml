@@ -27,7 +27,7 @@
   <entry>
     <title>X86 API Hook 原理（C++）</title>
     <url>/2021/02/08/X86%20API%20HOOK%20%E5%8E%9F%E7%90%86%EF%BC%88C++%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+    <content><![CDATA[<h1 id="X86-API-Hooking-原理-C"><a href="#X86-API-Hooking-原理-C" class="headerlink" title="X86 API Hooking 原理 (C++)"></a>X86 API Hooking 原理 (C++)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>原文： <a href="http://jbremer.org/x86-api-hooking-demystified/#ah-abstract">http://jbremer.org/x86-api-hooking-demystified/#ah-abstract</a></p>
 </blockquote>
 <p>本文介绍几种在x86指令集下进行API Hook的几种方法。</p>
@@ -91,7 +91,7 @@
 <h3 id="方法4：-MMX-SSE"><a href="#方法4：-MMX-SSE" class="headerlink" title="方法4： MMX/SSE"></a>方法4： MMX/SSE</h3><p>这种技术有点类似于[[#方法3：浮点]]。但是，此处我们使用MMX/SSE x86扩展替代使用浮点的方法。</p>
 <p>这两种方法都使用浮点技术，即push/retn方法。第一个方法涉及MMX指令集，尤其是movd指令。此指令像fistp指令（一个浮点指令）一样允许从内存中读取一个值，并将值保存到堆栈。第二种方法，使用SSE指令集，同样利用movd指令。两种方法唯一的区别是，MMX在64bit寄存器上工作，而SSE在128bit寄存器上工作。（虽然这在我们当前情况下没有什么意思，因为movd指令允许读取和写入32bit值）</p>
 <p>无论哪种方法，都和浮点方法完全相同，因此除了用到的指令，此处没有图进行说明。</p>
-<h3 id="方法5：间接跳转"><a href="#方法5：间接跳转" class="headerlink" title="方法5：间接跳转"></a>方法5：间接跳转</h3><p>间接跳转基本上是说，跳转到可以找到的地址。在[[#基础API Hooking]]章节我们介绍了相对跳转，它们属于绝对跳转。相对跳转与[[#方法2：Push Retn]]更相似。</p>
+<h3 id="方法5：间接跳转"><a href="#方法5：间接跳转" class="headerlink" title="方法5：间接跳转"></a>方法5：间接跳转</h3><p>间接跳转基本上是说，跳转到可以找到的地址。在[[#基础API Hooking]]章节我们介绍了相对跳转，它们属于直接跳转。间接跳转与[[#方法2：Push Retn]]更相似。</p>
 <p>间接跳转的长度为6个字节，一个简单的Hook例子如下所示：</p>
 <p><img src="http://jbremer.org/wp-posts/ah-indirect-jmp.png" alt="Indirect Jump method"></p>
 <p>请注意，hook_func_ptr表示可以在其中找到我们Hook函数的地址（比如function_B)</p>
